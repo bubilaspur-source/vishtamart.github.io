@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VishtaMart - Online Shopping Store</title>
+
+<meta name="description" content="VishtaMart is a free online shopping website for clothes, shoes and daily products at best price in India.">
+
+<style>
+body {font-family: Arial; margin:0; background:#f2f2f2;}
+header {background:#ff6600; color:white; padding:15px; text-align:center; font-size:25px;}
+.products {display:flex; flex-wrap:wrap; justify-content:center;}
+.item {background:white; margin:10px; padding:15px; width:220px; border-radius:10px; text-align:center;}
+button {background:green; color:white; border:none; padding:10px; cursor:pointer;}
+#cart {background:white; padding:20px; margin:20px;}
+footer {background:#222; color:white; text-align:center; padding:10px;}
+</style>
+</head>
+
+<body>
+
+<header>🛒 VishtaMart</header>
+
+<h2 style="text-align:center">Best Products For You</h2>
+
+<div class="products">
+
+<div class="item">
+<h3>T-Shirt</h3>
+<p>Price ₹499</p>
+<button onclick="addToCart('T-Shirt',499)">Add to Cart</button>
+</div>
+
+<div class="item">
+<h3>Shoes</h3>
+<p>Price ₹999</p>
+<button onclick="addToCart('Shoes',999)">Add to Cart</button>
+</div>
+
+<div class="item">
+<h3>Watch</h3>
+<p>Price ₹799</p>
+<button onclick="addToCart('Watch',799)">Add to Cart</button>
+</div>
+
+</div>
+
+<div id="cart">
+<h2>🧾 Your Cart</h2>
+<p id="items">No items added</p>
+<h3>Total: ₹<span id="total">0</span></h3>
+<button onclick="orderNow()">Order Now</button>
+</div>
+
+<footer>
+© 2026 VishtaMart | Free Online Store
+</footer>
+
+<script>
+let total = 0;
+let cartItems = [];
+
+function addToCart(name, price){
+cartItems.push(name);
+total += price;
+document.getElementById("items").innerHTML = cartItems.join(", ");
+document.getElementById("total").innerText = total;
+}
+
+function orderNow(){
+alert("Thank you for shopping from VishtaMart 🛍️");
+}
+</script>
+
+</body>
+</html>
