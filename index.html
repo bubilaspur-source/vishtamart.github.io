@@ -54,6 +54,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// 🔥 AUTO-FILL TEMP CREDENTIALS
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("email").value = "test123@gmail.com";
+  document.getElementById("password").value = "123456";
+});
+
 // SIGNUP
 window.signup = function(){
   const email = document.getElementById("email").value.trim();
