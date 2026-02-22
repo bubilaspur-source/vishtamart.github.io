@@ -1,0 +1,18 @@
+/VishtaMart
+  /customer
+    index.html
+    /js
+      firebase-config.js
+      customer.js
+    /css
+      style.css
+  /admin
+    admin.html
+    /js
+      firebase-config.js
+      admin.js
+    /css
+      style.css
+  /images
+    product1.png       ← optional product images
+  favicon.ico
