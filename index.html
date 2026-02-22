@@ -1,3 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VishtaMart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{font-family:Arial;text-align:center;background:#f4f4f4}
+.box{background:#fff;padding:20px;margin:10px;border-radius:10px}
+button{padding:10px;background:green;color:white;border:none}
+input{padding:8px;margin:5px}
+</style>
+</head>
+
+<body>
+
+<h1>🛒 VishtaMart</h1>
+
+<div id="loginBox" class="box">
+<h3>Login / Signup</h3>
+<input id="email" type="email" placeholder="Email"><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+<button onclick="signup()">Signup</button>
+<button onclick="login()">Login</button>
+</div>
+
+<div id="shop" style="display:none">
+<h2>Products</h2>
+<div id="products"></div>
+</div>
+
+<div id="admin" style="display:none" class="box">
+<h3>Admin Panel</h3>
+<input id="pname" placeholder="Product name">
+<input id="pprice" placeholder="Price">
+<button onclick="addProduct()">Add Product</button>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
@@ -16,26 +54,27 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// 🔥 TEMP AUTO FILL
-document.getElementById("email").value = "test123@gmail.com";
-document.getElementById("password").value = "123456";
-
 // SIGNUP
 window.signup = function(){
-  const emailInput = document.getElementById("email").value.trim();
-  const passwordInput = document.getElementById("password").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-  createUserWithEmailAndPassword(auth, emailInput, passwordInput)
+  if(!email || !password){
+    alert("Enter email and password properly");
+    return;
+  }
+
+  createUserWithEmailAndPassword(auth, email, password)
   .then(()=> alert("Signup success"))
   .catch(err=> alert(err.message));
 }
 
 // LOGIN
 window.login = function(){
-  const emailInput = document.getElementById("email").value.trim();
-  const passwordInput = document.getElementById("password").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-  signInWithEmailAndPassword(auth, emailInput, passwordInput)
+  signInWithEmailAndPassword(auth, email, password)
   .then(()=> alert("Login success"))
   .catch(err=> alert(err.message));
 }
@@ -43,11 +82,11 @@ window.login = function(){
 // AUTH STATE
 onAuthStateChanged(auth, user=>{
   if(user){
-    loginBox.style.display="none";
-    shop.style.display="block";
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("shop").style.display="block";
 
     if(user.email === "admin@gmail.com"){
-      admin.style.display="block";
+      document.getElementById("admin").style.display="block";
     }
 
     loadProducts();
@@ -56,19 +95,30 @@ onAuthStateChanged(auth, user=>{
 
 // ADD PRODUCT
 window.addProduct = async function(){
+  const name = document.getElementById("pname").value;
+  const price = document.getElementById("pprice").value;
+
+  if(!name || !price){
+    alert("Enter product name and price");
+    return;
+  }
+
   await addDoc(collection(db,"products"),{
-    name:pname.value,
-    price:pprice.value
+    name:name,
+    price:price
   });
+
+  alert("Product Added");
 }
 
 // LOAD PRODUCTS
 function loadProducts(){
   onSnapshot(collection(db,"products"), snap=>{
-    products.innerHTML="";
+    const productsDiv = document.getElementById("products");
+    productsDiv.innerHTML="";
     snap.forEach(doc=>{
       let p=doc.data();
-      products.innerHTML += `
+      productsDiv.innerHTML += `
       <div class="box">
         ${p.name} - ₹${p.price}
       </div>`;
@@ -76,3 +126,6 @@ function loadProducts(){
   });
 }
 </script>
+
+</body>
+</html>
