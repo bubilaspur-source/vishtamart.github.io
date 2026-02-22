@@ -91,6 +91,7 @@ onAuthStateChanged(auth, user=>{
     document.getElementById("loginBox").style.display="none";
     document.getElementById("shop").style.display="block";
 
+    // 🔹 Show Admin panel only for admin@gmail.com
     if(user.email === "admin@gmail.com"){
       document.getElementById("admin").style.display="block";
     }
@@ -101,8 +102,8 @@ onAuthStateChanged(auth, user=>{
 
 // ADD PRODUCT
 window.addProduct = async function(){
-  const name = document.getElementById("pname").value;
-  const price = document.getElementById("pprice").value;
+  const name = document.getElementById("pname").value.trim();
+  const price = document.getElementById("pprice").value.trim();
 
   if(!name || !price){
     alert("Enter product name and price");
@@ -115,15 +116,17 @@ window.addProduct = async function(){
   });
 
   alert("Product Added");
+  document.getElementById("pname").value = "";
+  document.getElementById("pprice").value = "";
 }
 
-// LOAD PRODUCTS
+// LOAD PRODUCTS (Live)
 function loadProducts(){
   onSnapshot(collection(db,"products"), snap=>{
     const productsDiv = document.getElementById("products");
     productsDiv.innerHTML="";
     snap.forEach(doc=>{
-      let p=doc.data();
+      const p = doc.data();
       productsDiv.innerHTML += `
       <div class="box">
         ${p.name} - ₹${p.price}
